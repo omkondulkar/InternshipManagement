@@ -108,7 +108,7 @@ $result = mysqli_query($connect, $sql);
                             <th colspan="<?php echo count($availableColumns); ?>">No Columns Selected</th>
                         <?php endif; ?>
                     </tr>
-                </thead>
+                </thead>    
                 <tbody class="tbody">
                     <?php if ($result && mysqli_num_rows($result) > 0): ?>
                         <?php while ($row = mysqli_fetch_assoc($result)): ?>
