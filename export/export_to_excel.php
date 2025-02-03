@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['columns'])) {
     // Available columns in the `student_details` table
     $availableColumns = [
         'Student_Id' => 'Student ID',
+        'PRN_No' => 'PRN Number',
         'Roll_no' => 'Roll Number',
         'FirstName' => 'First Name',
         'MiddleName' => 'Middle Name',

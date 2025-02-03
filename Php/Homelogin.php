@@ -39,7 +39,7 @@ if (isset($_POST['Login'])) {
 
         if ($admin_data['Password'] === $Password) {
             // Set session variables for admin
-            $_SESSION['AdminName'] = $admin_data['FullName'];
+            $_SESSION['AdminName'] = $admin_data['UserName'];
             $_SESSION['AdminEmail'] = $admin_data['Email'];
 
             // Redirect to admin page

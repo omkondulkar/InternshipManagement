@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./Images/collageLOGO.png">
+  <title>Internship Management</title>
+  <link rel="stylesheet" href="./Admin.css">
+  <script src="https://kit.fontawesome.com/e8e9c02a1b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        min-height: 100vh;
+        background-color: #f0f4f9;
+    }
+    .dashboard-container {
+        display: flex;
+        width: 100%;
+    }
+    .sidebar {
+        width: 250px;
+        max-height: 100vh;
+        height: 100%;
+        background-color: #1e3a8a;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        transition: width 0.3s;
+    }
+    .sidebar.minimized {
+        width: 60px;
+    }
+    .sidebar .logo {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+    .hamburger {
+        font-size: 1.5rem;
+        cursor: pointer;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: white;
+    }
+    .sidebar nav ul {
+        list-style: none;
+        margin-top: 2rem;
+    }
+    .sidebar nav ul li a {
+        text-decoration: none;
+        color: white;
+        padding: 10px;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    .sidebar nav ul li a:hover {
+        background-color: #3b5998;
+    }
+    .topbar {
+        padding: 10px;
+        background-color: #1e40af;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    .topbar h1 {
+        color: white;
+    }
+    .main-content {
+        flex: 1;
+        padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar" id="sidebar"> 
+      <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
+      <div class="logo">Admin</div>
+      <nav>
+        <ul>
+          <li><a href="./Admin_student.php"><i class="fa-solid fa-user-tie"></i> StudentDetails</a></li>
+          <li><a href="./Admin_intership.php"><i class="fa-solid fa-briefcase"></i> InternshipDetails</a></li>
+          <li><a href="./Admin_Company.php"><i class="fa-solid fa-building"></i> CompanyDetails</a></li>
+          <li><a href="./Admin_marks.php"><i class="fa-solid fa-marker"></i> MarksAssign</a></li>
+          <li><a href="./FileUpload.php"><i class="fa-solid fa-file-excel"></i> FileUpload</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h1>Dashboard</h1>
+      </header>
+    </main>
+  </div>
+  <script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("minimized");
+    }
+  </script>
+</body>
+</html>

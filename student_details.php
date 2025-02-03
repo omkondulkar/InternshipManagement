@@ -95,7 +95,6 @@
             ?>
             <div class="form first">
                 <div class="details personal">
-                    <span class="title">Personal Details</span>
 
                     <div class="fields">
                         <div class="input-field">

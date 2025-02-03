@@ -17,7 +17,7 @@
     box-sizing: border-box;
   }
   
-  body {
+  body {  
     font-family: Arial, sans-serif;
     display: flex;
     min-height: 100vh;
@@ -38,6 +38,7 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+
 
   }
   
@@ -147,7 +148,7 @@
 
 .topbar {
     padding: 8px;
-    background-color: #e9f4fdf7;
+    /* background-color:#91a7ff; */
     position: absolute;
     left: 17.8rem;
     top: 0;
@@ -324,13 +325,7 @@
             </a>
           </li>
 
-          <li>
-            <a href="./Admin_dublicate.php">
-            <i class="fa-solid fa-file-excel"></i>
-              Dublicate
-
-            </a>
-          </li>
+         
           
         </ul>
       </nav>

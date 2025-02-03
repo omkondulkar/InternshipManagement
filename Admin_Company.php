@@ -26,25 +26,28 @@ session_start();
     ?>
     <Section class="Admin_data">
             
-             <div class="actions">
-                    <form action="" method="POST" class="search_forms">
-                            <label>Search:</label>
-                            <input type="text" class="search"  id="search" placeholder="Search Courses" name="company_search" value="<?php echo htmlspecialchars($input); ?>">
-                            <button type="submit">Search</button>
-                    </form>
-
-                    <form action="./export/company_excel.php" method="POST" class="excel_form">
-                        <input type="hidden" name="columns" value="<?php echo htmlspecialchars(json_encode($columns)); ?>">
-                        <input type="hidden" name="search_query" value="<?php echo htmlspecialchars($searchQuery); ?>">
-                        <button type="submit" class="exportbtn" name="intership_excel" >Export to Excel</button> 
-                    </form>
-             </div>                               
+            
+             <div class="action_box">
+             <h3>Search</h3>
+                        <div class="search-box">
+                           
+                            <form action="" method="POST" class="search_forms">
+                                <input type="text" class="search"  id="search" placeholder="Search Courses" name="company_search" value="<?php echo htmlspecialchars($input); ?>">
+                                <button type="submit">Search</button>
+                            </form>
+                          
+                            
+                        </div> 
+             </div>                            
 
             <div class="table_box">
                  <?php
                 // if ($input) {
-                    $sql = "SELECT * FROM `company`WHERE `Company_Name` LIKE '%$input%' OR `Company_address` LIKE '%$input%' OR `Comp_ID` LIKE '%$input%' OR `Date` LIKE '%$input%'";
+                    $sql = "SELECT * FROM `company`WHERE `Company_Name` LIKE '%$input%' OR `Company_City` LIKE '%$input%' OR `Company_Address` LIKE '%$input%' OR`Comp_ID` LIKE '%$input%' OR `Date` LIKE '%$input%'";
                     
+                    // SELECT `Comp_ID`, `Company_Name`, `Company_City`, `Company_Address`, `Date`
+
+
                     $company=mysqli_query($connect,$sql);
                     $Company_wise=mysqli_num_rows($company)>0;
 
@@ -56,6 +59,7 @@ session_start();
                         <tr>
                             <th class="t_course">Comp_Id</th>
                             <th class="t_course">CompanyName</th>
+                            <th class="t_course">Company City </th>
                             <th class="t_course">Company Address </th>
                             <th class="t_course">Date </th>
                         </tr>
@@ -65,7 +69,8 @@ session_start();
                           <tr>
                                 <td class="user1"> <?php echo $data['Comp_ID'] ?></td>
                                         <td> <?php echo $data['Company_Name'] ?></td>
-                                <td> <?php echo $data['Company_address'] ?></td>
+                                <td> <?php echo $data['Company_City'] ?></td>
+                                <td> <?php echo $data['Company_Address'] ?></td>
                                 <td> <?php echo $data['Date'] ?></td>
                           </tr> 
                           <?php } ?>  

@@ -2,63 +2,95 @@
 require("connection.php");
 session_start();
 
-// Insert data into internship_details table in the database
+// // Insert data into internship_details table in the database
+// if (isset($_POST['Done'])) {
+//     $studentId = $_POST['studentId']; // Student_Id from dropdown
+//     $project = $_POST['project'];
+//     $HR = $_POST['HR'];
+//     $HREmail = $_POST['HREmail'];
+//     $GrpName = $_POST['GrpName'];
+//     $mobile = $_POST['mob'];
+//     $category = $_POST['category'];
+//     $duration = $_POST['duration'];
+//     $offer = $_POST['offer'];
+
+//     $companyId = isset($_POST['companyId']) ? $_POST['companyId'] : null; // Check if companyId exists
+//     $companyName = $_POST['compName'];
+//     $companyCity = $_POST['Company_city'];
+//     $companyAddress = $_POST['Company_address'];
+
+//     $date = date('Y-m-d');
+
+//     //
+//     // _____________If no company is selected, save the new company_________________
+//     if (empty($companyId) && !empty($companyName)  && !empty($Company_City) && !empty($companyAddress)) {
+//         $insertCompany = mysqli_query($connect, "INSERT INTO `company`(`Comp_ID`, `Company_Name`, `Company_City`, `Company_Address`, `Date`) VALUES ('','$companyName','$companyCity','$companyAddress','$date')");
+//         if ($insertCompany) {
+//             $companyId = mysqli_insert_id($connect); // Get the ID of the newly inserted company
+//         }
+//     }
+
+
+//     // SELECT `Inter_id`, `Name`, `Company`, `Project_Name`, `HR_Name`, `Category`, `Group_Name`, `Duration`, `Offer_Letter`, `date` FROM `intership_details
+
+//     $inter = mysqli_query($connect, "INSERT INTO `intership_details`(`Inter_id`, `Name`, `Company`, `Project_Name`, `HR_Name`, `HR_Email`, `Group_Name`, `Category`,`Duration`,`Offer_Letter`, `date`) VALUES ('','$studentId','$companyId','$project','$HR','$HREmail ','$GrpName','$category','$duration','$offer','$date')");
+
+//     // INSERT INTO `intership_details`(`Inter_id`, `Name`, `Company`, `Project_Name`, `HR_Name`, `HR_Email`, `Group_Name`, `Category`, `Duration`, `Offer_Letter`, `date`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]','[value-7]','[value-8]','[value-9]','[value-10]','[value-11]')
+
+//     if ($inter) {
+//         $done = 1;
+//     } else {
+//         $error[] = 'Failed: Something went wrong';
+//     }
+
+
+    // Insert data into internship_details table in the database
 if (isset($_POST['Done'])) {
+    require("connection.php");
+    
     $studentId = $_POST['studentId']; // Student_Id from dropdown
     $project = $_POST['project'];
     $HR = $_POST['HR'];
+    $HREmail = $_POST['HREmail'];
     $GrpName = $_POST['GrpName'];
     $mobile = $_POST['mob'];
     $category = $_POST['category'];
     $duration = $_POST['duration'];
     $offer = $_POST['offer'];
 
-    $companyId = isset($_POST['companyId']) ? $_POST['companyId'] : null; // Check if companyId exists
-    $companyName = $_POST['compName'];
-    $companyAddress = $_POST['Company_address'];
-
+    $companyId = isset($_POST['companyId']) && !empty($_POST['companyId']) ? $_POST['companyId'] : null;
+    $companyName = trim($_POST['compName']);
+    $companyCity = trim($_POST['Company_city']);
+    $companyAddress = trim($_POST['Company_address']);
+    
     $date = date('Y-m-d');
 
-    // Member name and roll No 
-    // // Handle member names and roll numbers based on category
-    // if ($category === "Single") {
-    //     $memberNamesStr = "None";
-    //     $memberRollsStr = "None";
-    // } else {
-    //     $memberIds = $_POST['memberIds']; // Array of Member Student_Ids from dropdown
-    //     $memberNames = [];
-    //     $memberRolls = [];
-    //     foreach ($memberIds as $memberId) {
-    //         $memberQuery = mysqli_query($connect, "SELECT FirstName, LastName, Roll_No FROM student_details WHERE Student_Id = '$memberId'");
-    //         if ($row = mysqli_fetch_assoc($memberQuery)) {
-    //             $memberNames[] = $row['FirstName'] . ' ' . $row['LastName'];
-    //             $memberRolls[] = $row['Roll_No'];
-    //         }
-    //     }
-    //     $memberNamesStr = implode(",", $memberNames);
-    //     $memberRollsStr = implode(",", $memberRolls);
-    // }
-
-
-    // _____________If no company is selected, save the new company_________________
-    if (empty($companyId) && !empty($companyName) && !empty($companyAddress)) {
-        $insertCompany = mysqli_query($connect, "INSERT INTO `company`(`Comp_Id`, `Company_Name`, `Company_address`,`Date`) VALUES ('','$companyName','$companyAddress','$date')");
+    // Insert new company if not selected
+    if (empty($companyId) && !empty($companyName) && !empty($companyCity) && !empty($companyAddress)) {
+        $insertCompany = mysqli_query($connect, "INSERT INTO `company`(`Company_Name`, `Company_City`, `Company_Address`, `Date`) VALUES ('$companyName','$companyCity','$companyAddress','$date')");
+        
         if ($insertCompany) {
-            $companyId = mysqli_insert_id($connect); // Get the ID of the newly inserted company
+            $companyId = mysqli_insert_id($connect); // Get the new company ID
+        } else {
+            $error[] = 'Failed to add company details.';
         }
     }
 
-
-    // SELECT `Inter_id`, `Name`, `Company`, `Project_Name`, `HR_Name`, `Category`, `Group_Name`, `Duration`, `Offer_Letter`, `date` FROM `intership_details
-
-    $inter = mysqli_query($connect, "INSERT INTO `intership_details`(`Inter_id`, `Name`, `Company`, `Project_Name`, `HR_Name`, `Category`, `Group_Name`,`Duration`,`Offer_Letter`, `date`) VALUES ('','$studentId','$companyId','$project','$HR','$category','$GrpName','$duration','$offer','$date')");
-
-    if ($inter) {
-        $done = 1;
+    // Ensure companyId is not null
+    if (!empty($companyId)) {
+        $inter = mysqli_query($connect, "INSERT INTO `intership_details`(`Name`, `Company`, `Project_Name`, `HR_Name`, `HR_Email`, `Group_Name`, `Category`, `Duration`, `Offer_Letter`, `date`) 
+                                         VALUES ('$studentId','$companyId','$project','$HR','$HREmail','$GrpName','$category','$duration','$offer','$date')");
+        if ($inter) {
+            $done = 1;
+        } else {
+            $error[] = 'Failed: Something went wrong';
+        }
     } else {
-        $error[] = 'Failed: Something went wrong';
+        $error[] = 'Invalid company selection. Please select or add a company.';
     }
 }
+
+// }
 ?>
 
 <!DOCTYPE html>
@@ -133,6 +165,10 @@ if (isset($_POST['Done'])) {
                             <label>HR Name</label>
                             <input type="text" name="HR" placeholder="Enter HR names" required>
                         </div>
+                        <div class="input-field">
+                            <label>HR Email</label>
+                            <input type="text" name="HREmail" placeholder="Enter HR names" required>
+                        </div>
 
                         <div class="input-field">
                             <label>Email</label>
@@ -163,17 +199,14 @@ if (isset($_POST['Done'])) {
                             <input type="date" name="duration" required>
                         </div>
 
-                        <div class="input-field">
-                            <label>Offer Letter</label>
-                            <input type="file" name="offer" style="padding: 0.6rem; font-size: 1.1rem;" required>
-                        </div>
+                       
 
                         <div class="input-field">
                             <label>Company</label>
                             <select name="companyId">
                                 <option disabled selected>Select Company</option>
-                                <?php
-                                $companies = mysqli_query($connect, "SELECT Comp_Id, Company_Name FROM company");
+                                <?php      // SELECT `Comp_ID`, `Company_Name`, `Company_City`, `Company_Address`, `Date` FROM `company`
+                                $companies = mysqli_query($connect, "SELECT `Comp_ID`, `Company_Name`, `Company_City`, `Company_Address` FROM company");
                                 while ($row = mysqli_fetch_assoc($companies)) {
                                     echo "<option value='" . $row['Comp_Id'] . "'>" . $row['Company_Name'] . "</option>";
                                 }
@@ -183,11 +216,22 @@ if (isset($_POST['Done'])) {
 
                         <div class="input-field">
                             <label>(If your company name is not found, enter here)</label>
+                            <label>Company Name</label>
                             <input type="text" name="compName" placeholder="Enter Company Name">
+                        </div>
+                        <div class="input-field">
+                                <label>Company Address</label>
                             <input type="text" name="Company_address" placeholder="Enter Company Address">
                         </div>
+                        <div class="input-field">
+                                <label>Company City</label>
+                            <input type="text" name="Company_city" placeholder="Enter Company Address">
+                        </div>
+                        <div class="input-field">
+                                <label>Offer Letter</label>
+                                <input type="file" name="offer" style="padding: 0.6rem; font-size: 1.1rem;" required>
+                            </div>
                     </div>
-
                     <div class="buttons">
                         <button type="button" class="nextBtn" id="backbtn">
                             <i class="fa-solid fa-circle-left"></i>

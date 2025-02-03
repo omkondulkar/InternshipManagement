@@ -74,12 +74,18 @@ body::-webkit-scrollbar-thumb {
 .items .item a {
     text-decoration: none;
     padding: 2px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     text-transform: uppercase;
     color: #000;
     font-weight: 300;
+    transition: .1s ease-in;
 }
+.items .item a:hover{
+    color:rgb(0, 72, 255);
+    border-bottom: 2px solid  rgb(0,72,255);
+}
+
 .profile_section{
     /* border: 2px solid red; */
     width: 18rem;
@@ -302,12 +308,14 @@ body::-webkit-scrollbar-thumb {
                <div class="menu-items">
                     <ul class="items">
                         <li class="item"><a href="./Intership_Home.php">Home</a></li>
-                         <li class="item"><a >Forms</a>
+                        <li class="item"><a href="./student_details.php">Student Details</a></li>
+                        <li class="item"><a href="./intership_details.php">  Internship Details</a></li>
+                         <!-- <li class="item"><a >Forms</a>
                              <ul class="forms">
                                 <li class="form"><a href="./student_details.php"> Student Details </a>  </li>
                                 <li class="form"><a href="./intership_details.php">  Internship Details</a>  </li>
                             </ul>
-                        </li>
+                        </li> -->
 
                         
                     </ul>

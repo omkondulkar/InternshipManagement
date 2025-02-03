@@ -1,311 +1,177 @@
 
-
-.Admin_data{
-  max-height: 85vh;
-    max-width: 1280px;
-    height: 100%;
-    position: absolute;
-    top: 6rem;
-    padding: 1rem;
-    left: 18rem;
-    width: 100%;
-    /* border: 3px solid red; */
-}
-label{
-  font-size: 1.3rem;
-}
-.column_select{
-  /* height: 12.5rem; */
-    /* border: 2px solid red; */
-    padding: 1rem;
-    margin-right: 6rem;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px 1px #848484;
-}
-.select_item{
-  /* border: 2px solid red; */
-    margin-top: 10px;
-    padding: 1rem;
-    font-size: 1.1rem;
-}
-.select_item input{
-  width: 20px;
-  height: 20px;
-  top: 4px;
-  right: 4px;
-  position: relative;
-  margin-left: 1.1rem;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.applybtn{
-  width: 5rem;
-    height: 1.8rem;
-    font-size: 1rem;
-    background-color: #ffa8a8;
-    box-shadow: 0 0 4px 1px #d15555;
-    font-weight: 500;
-    border: none;
-    text-transform: uppercase;
-    border-radius: 9px;
-    transition: .2s ease-in;
+body {
+  height: 100vh; /* Ensure the body takes the full viewport height */
 }
-.applybtn:hover{
-  background-color: #ffffff;
+
+:root{
+  --primary:#fff;
+  --secondary:#000;
+  --button:lightpink;
+  --background:lightskyblue;
+  --bg1:rgb(90, 144, 232);
+
 }
-.actions{
-  /* border: 2px solid red; */
-  box-shadow: 0 0 4px 1px #d1eafdf7;
-  margin-top: 1rem;
+.Admin_data {
+  /* border: 2px solid black; */
+  background-color: var(--primary);
+  position: absolute;
+  left: 20rem;
+  top: 7rem;
   padding: 1rem;
-  margin-right: 5rem;
+  width: calc(100vw - 22rem); /* Adjust width to fit within viewport */
+  height: calc(100vh - 7rem); /* Adjust height relative to body */
+  overflow: auto; /* Ensure scroll if content overflows */
+}
+.perfom_box{
+  /* background-color: greenyellow; */
   display: flex;
-
   justify-content: space-between;
 }
-.actions .search_forms{
-  /* border: 2px solid green; */
-  width: 55rem;
-  height: 3rem;
-  padding: 5px;
+.panel{
+  /* border: 2px solid black; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 50%;
+    font-size: 1.1rem;
+    padding: 1em;
 }
-.actions .search_forms .search_field{
-  font-size: 1rem;
-  height: 2rem;
+#availableColumns{
+  /* border: 2px solid black; */
+    list-style: none;
+    /* width: 100%; */
+    
 }
-.actions .search_forms .search{
-  width: 25rem;
-  height: 2rem;
- 
+ .panel li{
+  margin-top: 10px; 
+  box-shadow: 0 0 2px 1px var(--secondary);
+  height: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--background);
+  padding: 8px;
+  width: 15rem;
+  /* margin-bottom: 8px; */
 }
-.actions .search_forms button{
-  background-color: #ffa8a8;
-  width: 5rem;
-  border: 2px solid #ffa8a8;
-  height: 2rem;
-  font-size: 0.9rem;
-  border-radius: 7px;
-  margin-left: 2rem;
-  transition: .2s ease-in;
+.panel button{
+  width: 3rem;
+    height: 1.3rem;
+    background: var(--button);
+    font-weight: 550;
+    border-radius: 5px;
 }
-.actions .search_forms button:hover{
-  background-color: #e9f4fdf7 ;
-  border: 2px solid #848484;
-}
-.actions .excel_form button{
-  background-color: #5ed860;
-  font-weight: 500;
-  width: 9rem;
-  border: 2px solid #2f4f3d;
-  height: 2rem;
-  font-size: 1rem;
-  border-radius: 7px;
-  margin-left: 2rem;
-  transition: .2s ease-in;
-}
-.actions .excel_form button:hover{
- background-color: #e9f4fdf7;
-}
-.table {
-  max-width: 1200px;
-  /* width: 100%; */
+.action_box{
 
-  /* height: 55%; */
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+}
+select{
+  width: 10rem;
+  height: 1.6rem;
+  font-size: 1rem;
+  margin-top: 11px;
+}
+.action_box input{
   margin-top: 1rem;
+  width: 15rem;
+  height: 3rem;
+  font-size: 1.1rem;
+  border-radius: 7px;
+  padding: 8px;
+  border:none;
+  box-shadow: 0 0 2px 1px var(--secondary);
+}
+button[type="submit"]{
+  width: 8rem;
+  height: 2rem;
+  margin-left: 3rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  background-color: var(--button);
+  transition: all 0.1s ease-in-out;
+}
+button[type="submit"]:hover{
+  border: 2px solid var(--secondary);
+}
+
+.table_box {
+  width: 100%;
+  max-height: 80vh; /* Adjust height to prevent overflow */
+  overflow: auto; /* Enables scrolling if the table is too large */
+  /* border: 2px solid black; */
+  border-radius: 10px;
+  background: var(--primary);
+  padding: 1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 1rem;
+}
+
+
+.table {
+  width: 100%;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  display: block; 
-  overflow-x: auto; 
-  max-height: 300px;
-  /* box-shadow: 0 0 7px 0 #2d2d2d6b; */
 }
 
 .table thead {
-  position: sticky; /* Keep thead at the top */
-  top: 0; /* Stick at the very top */
-  z-index: 2; /* Ensure it stays above tbody */
-}
-
-.table thead th {
-  background-color: #cae3f8f7;
-  color: #333;
-  font-weight: bold;
-  border-bottom: 2px solid #ddd;
+  background-color: var(--bg1);
+  color: white;
+  position: sticky;
+  top: 0;
 }
 
 .table th, 
 .table td {
-  padding: 10px 15px;
+  padding: 12px;
   text-align: left;
-  white-space: nowrap; /* Prevent text from wrapping */
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap; /* Prevents text wrapping */
 }
 
-.table tbody tr:nth-child(odd) {
-  background-color: #fff;
+.table th {
+  position: relative;
 }
 
-.table tbody tr:nth-child(even) {
-  background-color: #e4e4e4f7;
-}
-
-.table tbody tr:hover {
-  background-color: #b6d4f1;
+.table th button {
+  margin-left: 8px;
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  background: var(--primary);
   cursor: pointer;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .table th, 
-  .table td {
-    padding: 8px;
-    font-size: 12px;
-  }
+.table th button:hover {
+  background: lightgray;
 }
 
-@media (max-width: 480px) {
-  .table_box {
-    width: 100%;
-    margin: 10px 0;
-  }
-
-  .table th, 
-  .table td {
-    padding: 5px;
-    font-size: 10px;
-  }
-
-  .table thead th {
-    font-size: 12px;
-  }
+.table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
 }
 
-
-table tbody tr td .drop{
-  width: 12rem;
-  height: 3.5rem;
-  font-size: 1rem;
-  font-weight: 250;
-}
-table tbody tr td .marksIn{
-      width: 10rem;
-      height: 3.5rem;
-      padding: 1rem;
-      font-size: 1rem;
-      font-weight: 600;
+.table tbody tr:hover {
+  background-color: #e3f2fd;
+  transition: 0.3s;
 }
 
-table tbody tr td .marksbtn{
-  width: 6rem;
-  height: 3rem;
-  border-radius: 9px;
-  background-color: #f4d6ee;
-  color: #201c1c;
-  font-size: 1rem;
-}
-table tbody tr td .marksbtn:hover{
-  border: 2px solid #fa88e3;
+.table_box::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-/* _____________File uploaded syling_________________  */
-.Admin_data .line{
-  border-top: 3px solid rgb(155, 62, 70);
-  margin: 2rem 5rem 1rem 0;
+.table_box::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 5px;
 }
 
-
-.actions .template{
-      margin-left: -5rem;
-      padding: 5px;
-      font-size: 1.2rem;
-      color: #000;
-      transition: .2s ease-in;
+.table_box::-webkit-scrollbar-track {
+  background: lightgray;
 }
-.actions .template:hover{
-  background-color: #cfd0ff;
-  
-}
-.actions .template_box{
-  background-color: #fff;
-}
-.actions .upload_form{
-  /* border: 1px solid #000; */
-  margin-right: 2rem;
-  padding: 5px;
-
-}
-.actions .upload_form input{
-  width: 18rem;
-  /* border: 2px solid black; */
-  height: 2rem;
-  font-size: 1rem;
-
-
-}
-
-.actions .upload_form button{
-  width: 4rem;
-    height: 2rem;
-    font-size: 0.9rem;
-    border-radius: 6px;
-    border: 1px solid black;
-  transition: .2s ease-in;
-  }
-  
-  /* _____________ Notification Styling ___  */
- 
-
-
-
-.notification_form input,
-.notification_form button {
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
-.notifications_table {
-    margin-top: 20px;
-}
-
-.table .expired {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-.table .active {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.delete-btn {
-    color: red;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.column_select  .msg_form{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.msg_write{
-  font-size: 1rem;
-  width: 30rem;
-    height: 5rem;
-    margin: 1rem;
-    border: 2px solid black;
-    
-}
-.time_line{
-  margin-top: 2rem;
-
-}
-  .time{
-
-    width: 10rem;
-    height: 2rem;
-    font-size: 1rem;
-    border: 2px solid black;
-    border-radius: 7px;
-    padding: 10px;
-  }
