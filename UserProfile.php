@@ -271,7 +271,7 @@
                                     SELECT 
                                         I.*, 
                                         S.FirstName, S.Email, S.Roll_no,
-                                        C.Company_Name, C.Company_address 
+                                        C.Company_Name, C.Company_Address,c.Company_City 
                                     FROM 
                                         intership_details I
                                     INNER JOIN 
@@ -306,8 +306,13 @@
                                         </div>
 
                                         <div class="email_r">
-                                        <p class="full_name_head_r">Company Address</p>
-                                        <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['Company_address']; ?>"> 
+                                            <p class="full_name_head_r">Company Address</p>
+                                            <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['Company_Address']; ?>"> 
+                                        </div>
+
+                                        <div class="email_r">
+                                            <p class="full_name_head_r">Company City</p>
+                                            <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['Company_City']; ?>"> 
                                         </div>
 
                                         <div class="email_r">
@@ -316,8 +321,13 @@
                                         </div>
 
                                         <div class="email_r">
-                                        <p class="full_name_head_r">HR Name</p>
-                                        <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['HR_Name']; ?>"> 
+                                            <p class="full_name_head_r">HR Name</p>
+                                            <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['HR_Name']; ?>"> 
+                                        </div>
+
+                                        <div class="email_r">
+                                            <p class="full_name_head_r">HR Email</p>
+                                            <input disabled class="inputfeild inputfeild" type="text" value="<?php echo $internship['HR_Email']; ?>"> 
                                         </div>
 
                                         <div class="email_r">

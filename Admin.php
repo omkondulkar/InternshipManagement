@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./Images/collageLOGO.png">
-  <title>Internship Management</title>  <link rel="stylesheet" href="./Admin.css">
+  <title>Internship Management</title> 
+   <link rel="stylesheet" href="./Admin.css">
   <script src="https://kit.fontawesome.com/e8e9c02a1b.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
@@ -319,7 +320,21 @@
           </li>
 
           <li>
+            <a href="./report.php">
+            <i class="fa-solid fa-file-pdf"></i>
+              Genrate Report
+            </a>
+          </li>
+
+          <li>
             <a href="./FileUpload.php">
+            <i class="fa-solid fa-file-excel"></i>
+              FileUpload
+            </a>
+          </li>
+          
+          <li>
+            <a href="./register.php">
             <i class="fa-solid fa-file-excel"></i>
               FileUpload
             </a>

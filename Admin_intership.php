@@ -23,6 +23,8 @@ $availableColumns = [
     'Inter_id' => 'Intern ID',
     'Name' => 'Intern Name',
     'Company' => 'Company',
+    //  'CompanyCity' => 'Company City',
+    // 'CompanyAddress' => 'Company Address',
     'Project_Name' => 'Project Name',
     'HR_Name' => 'HR Name',
     'HR_Email' => 'HR Email',
@@ -243,6 +245,13 @@ $result = mysqli_query($connect, $sql);
             <button type="submit">Apply Filters</button>
         </form>
         <div class="table_box">
+            <form action="./export/intership_excel.php" method="POST" class="excel_form">
+                        <input type="hidden" name="columns" value="<?php echo htmlspecialchars(json_encode($columns)); ?>">
+                        <input type="hidden" name="search_query" value="<?php echo htmlspecialchars($searchQuery); ?>">
+                        <button type="submit" name="intership_excel" >   
+                        <i class="fa-solid fa-download" name="intership_excel" type="submit"></i>
+                        </button>
+                    </form>
             <table class="table">
                 <thead>
                     <tr>

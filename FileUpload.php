@@ -18,7 +18,7 @@ if (isset($_GET['open_template'])) {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    $headers = ['ID', 'FirstName', 'MiddleName', 'LastName', 'Email', 'Ph_no', 'Address', 'Roll_No', 'DOB', 'Gender', 'Acad-Year'];
+    $headers = ['PRN_No', 'FirstName', 'MiddleName', 'LastName', 'Email', 'Ph_no', 'Address', 'Roll_No', 'DOB', 'Gender', 'Acad-Year'];
     foreach ($headers as $col => $header) {
         $sheet->setCellValue(chr(65 + $col) . '1', $header);
     }
@@ -48,15 +48,17 @@ if (isset($_POST['student_submit'])) {
     $sheet = $spreadsheet->getActiveSheet();
     $rows = $sheet->toArray();
 
+// SELECT `Student_Id`, `PRN_No`, `FirstName`, `MiddleName`, `LastName`, `Email`, `Ph_no`, `Address`, `Roll_No`, `DOB`, `Gender`, `Acad-Year`, `Date` FROM `student_details`
+
     // Updated SQL query (Student_Id is AUTO_INCREMENT, so we don't insert it)
-    $stmt = $connect->prepare("INSERT INTO student_details (ID, FirstName, MiddleName, LastName, Email, Ph_no, Address, Roll_No, DOB, Gender, `Acad-Year`, Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+    $stmt = $connect->prepare("INSERT INTO student_details (PRN_No, FirstName, MiddleName, LastName, Email, Ph_no, Address, Roll_No, DOB, Gender, `Acad-Year`, Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
 
 
     if (!$stmt) {
         die("Prepare failed: " . $connect->error);
     }
 
-    $stmt->bind_param("issssssssss", $id, $firstName, $middleName, $lastName, $email, $ph_no, $address, $roll_no, $dob, $gender, $acad_year);
+    $stmt->bind_param("sssssssssss", $id, $firstName, $middleName, $lastName, $email, $ph_no, $address, $roll_no, $dob, $gender, $acad_year);
 
     $header = true;
     foreach ($rows as $index => $row) {
@@ -77,10 +79,10 @@ if (isset($_POST['student_submit'])) {
         $gender = isset($row[9]) ? trim($row[9]) : '';
         $acad_year = isset($row[10]) ? trim($row[10]) : '';
 
-        if (!is_numeric($id)) {
-            $msg[] = "Row " . ($index + 1) . ": Invalid ID format ({$id}). Must be a number.";
-            continue;
-        }
+        // if (!is_numeric($id)) {
+        //     $msg[] = "Row " . ($index + 1) . ": Invalid ID format ({$id}). Must be a number.";
+        //     continue;
+        // }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $msg[] = "Row " . ($index + 1) . ": Invalid email format ({$email}).";
@@ -121,7 +123,7 @@ if (isset($_POST['student_submit'])) {
 
     $stmt->close();
 }
-// ________________________________________Company Data Code ____________________________________ 
+// ________________________________________Company Data Code start____________________________________ 
 
 if ($connect->connect_error) {
     die("Connection failed: " . $connect->connect_error);
@@ -130,9 +132,9 @@ if ($connect->connect_error) {
 // Generate Excel Template (Comp_ID removed)
 if (isset($_GET['open_template_company'])) {
     $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
+    $sheet = $spreadsheet->getActiveSheet();   
 
-    $headers = ['Company_Name', 'Company_address']; // Comp_ID removed from headers
+    $headers = ['Company_Name','Company_City', 'Company_Address']; // Comp_ID removed from headers
     foreach ($headers as $col => $header) {
         $sheet->setCellValue(chr(65 + $col) . '1', $header);
     }
@@ -151,6 +153,10 @@ $cmpmsg = [];
 if (isset($_POST['company_submit'])) {
     $file = $_FILES['company_file']['tmp_name'];
 
+    if (!file_exists($file)) {
+        die("No file uploaded or file not found.");
+    }
+
     try {
         $spreadsheet = IOFactory::load($file);
     } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
@@ -160,14 +166,17 @@ if (isset($_POST['company_submit'])) {
     $sheet = $spreadsheet->getActiveSheet();
     $rows = $sheet->toArray();
 
-    // Updated SQL query (Comp_ID removed)
-    $stmt = $connect->prepare("INSERT INTO company (Company_Name, Company_address, Date) VALUES (?, ?, CURDATE())");
+    if (empty($rows)) {
+        die("No data found in the uploaded file.");
+    }
+
+    $stmt = $connect->prepare("INSERT INTO company (Company_Name, Company_City, Company_Address, Date) VALUES (?, ?, ?, CURDATE())");
 
     if (!$stmt) {
         die("Prepare failed: " . $connect->error);
     }
 
-    $stmt->bind_param("ss", $company_name, $company_address); // "ss" binding (Comp_ID removed)
+    $stmt->bind_param("sss", $company_name, $company_city, $company_address);
 
     $header = true;
     foreach ($rows as $index => $row) {
@@ -177,7 +186,13 @@ if (isset($_POST['company_submit'])) {
         }
 
         $company_name = isset($row[0]) ? trim($row[0]) : '';
-        $company_address = isset($row[1]) ? trim($row[1]) : '';
+        $company_city = isset($row[1]) ? trim($row[1]) : '';
+        $company_address = isset($row[2]) ? trim($row[2]) : '';
+
+        if (empty($company_name) || empty($company_city) || empty($company_address)) {
+            $cmpmsg[] = "Row " . ($index + 1) . ": Skipped due to missing data.";
+            continue;
+        }
 
         if (!$stmt->execute()) {
             $cmpmsg[] = "Row " . ($index + 1) . ": Database error - " . $stmt->error;
@@ -186,14 +201,19 @@ if (isset($_POST['company_submit'])) {
         }
     }
 
-  
-
     $stmt->close();
+
+    // // Display messages
+    // foreach ($cmpmsg as $msg) {
+    //     echo $msg . "<br>";
+    // }
 }
+
 
 
 // ________________________________Comapny Code End __________________________________ 
 $connect->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -214,17 +234,30 @@ $connect->close();
     ?>
 
     <section class="Admin_data">
+
+    <!-- ____________________ Student File Upload Code _________________  -->
             <label class="file_heading">Student Information</label>
             <div class="actions">
-                
-                <?php 
-                if (empty($msg)){ echo "<p style='color: green;'>" ."Data uploaded successfully!"."</p>"; 
-                }else {
-                    foreach ($msg as $message) {
-                       echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
-                        // echo htmlspecialchars($message) . "<br>";
-                    }
+            <!-- if (!empty($msg)) {
+                foreach ($msg as $message) {
+                  echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
                 }
+            } -->
+                <?php 
+                    if (!empty($msg)) {
+                        foreach ($msg as $message) {
+                          echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
+                        }
+                    }
+
+
+                // if (empty($msg)){ echo "<p style='color: green;'>" ."Data uploaded successfully!"."</p>"; 
+                // }else {
+                //     foreach ($msg as $message) {
+                //        echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
+                //         // echo htmlspecialchars($message) . "<br>";
+                //     }
+                // }
                 ?>
             </div>     
 
@@ -238,6 +271,8 @@ $connect->close();
                         <button type="submit" name="student_submit">Upload</button>
                   </form>
             </div> 
+            <!-- ___________________End _____________  -->
+
            <hr class="line">
             <!-- _______________Company File Upload Code _________________  -->
 
@@ -245,13 +280,14 @@ $connect->close();
             <div class="actions">
                 
                 <?php 
-                if (empty($cmpmsg)){ echo "<p style='color: green;'>" ."Data uploaded successfully!"."</p>"; 
-                }else {
-                    foreach ($cmpmsg as $message) {
-                       echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
-                        // echo htmlspecialchars($message) . "<br>";
+
+                    if (!empty($cmpmsg)) {
+                        foreach ($cmpmsg as $message) {
+                            echo "<p style='color: red;'>" .htmlspecialchars($message)."</p>";
+                        }
                     }
-                }
+
+             
                 ?>
              </div>     
 
@@ -259,12 +295,14 @@ $connect->close();
                  <h2>Download Excel Template:</h2>
                  <a href="?open_template_company=true" target="_blank" class="template">Open Template</a>
 
-              <h2>Upload Student Data</h2>
+              <h2>Upload Company Data</h2>
                     <form method="POST" enctype="multipart/form-data" class="upload_form">
                         <input type="file" name="company_file" required>
                          <button type="submit" name="company_submit">Upload </button>
                     </form>
             </div> 
+        <!-- ________________________ company End ________________  -->
+
     </section>
     <script>
         const body = document.querySelector("body"),

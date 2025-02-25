@@ -19,14 +19,16 @@ $availableColumns = [
     'Inter_id' => 'Intern ID',
     'Name' => 'Intern Name',
     'Company' => 'Company',
+    'CompanyCity' => 'Company City',
+    'CompanyAddress' => 'Company Address',
     'Project_Name' => 'Project Name',
     'HR_Name' => 'HR Name',
+    'HR_Email' => 'HR Email',
     'Category' => 'Category',
+    'Group_Name' => 'Group Name',
     'Duration' => 'Duration',
-    'Member_name' => 'Member Name',
-    'Member_Roll' => 'Member Roll',
     'Offer_Letter' => 'Offer Letter',
-    'date' => 'Date'
+    'date' => 'Date',
 ];
 
 // Build SELECT clause
@@ -36,7 +38,8 @@ if (in_array('Name', $columns)) {
 }
 if (in_array('Company', $columns)) {
     $selectColumns[] = "c.Company_Name AS CompanyName";
-    $selectColumns[] = "c.Company_address AS CompanyAddress";
+    $selectColumns[] = "c.Company_City AS CompanyCity";
+    $selectColumns[] = "c.Company_Address AS CompanyAddress";
 }
 foreach ($columns as $column) {
     if (!in_array($column, ['Name', 'Company', 'Inter_id'])) {
@@ -59,8 +62,20 @@ if (in_array('Company', $columns)) {
 $whereClause = "";
 if (!empty($searchQuery)) {
     $whereParts = [];
-    foreach ($selectColumns as $selectColumn) {
-        $whereParts[] = "$selectColumn LIKE '%$searchQuery%'";
+    if (in_array('Name', $columns)) {
+        $whereParts[] = "sd.FirstName LIKE '%$searchQuery%'";
+        $whereParts[] = "sd.MiddleName LIKE '%$searchQuery%'";
+        $whereParts[] = "sd.LastName LIKE '%$searchQuery%'";
+    }
+    if (in_array('Company', $columns)) {
+        $whereParts[] = "c.Company_Name LIKE '%$searchQuery%'";
+        $whereParts[] = "c.Company_City LIKE '%$searchQuery%'";
+        $whereParts[] = "c.Company_Address LIKE '%$searchQuery%'";
+    }
+    foreach ($columns as $column) {
+        if (!in_array($column, ['Name', 'Company'])) {
+            $whereParts[] = "id.$column LIKE '%$searchQuery%'";
+        }
     }
     $whereClause = " WHERE " . implode(" OR ", $whereParts);
 }
@@ -75,7 +90,12 @@ $sheet = $spreadsheet->getActiveSheet();
 
 // Add headers
 $headerRow = [];
-foreach ($columns as $column) {
+foreach ($columns as $column)
+if ($column === 'Company') {
+    $headerRow[] = $availableColumns[$column];
+    $headerRow[] = $availableColumns['CompanyCity'];
+    $headerRow[] = $availableColumns['CompanyAddress'];
+} else {
     $headerRow[] = $availableColumns[$column];
 }
 $sheet->fromArray($headerRow, null, 'A1');
@@ -90,12 +110,19 @@ if ($result && mysqli_num_rows($result) > 0) {
                 $dataRow[] = $row['InternName'] ?? '';
             } elseif ($column === 'Company') {
                 $dataRow[] = $row['CompanyName'] ?? '';
+                $dataRow[] = $row['CompanyCity'] ?? '';
+                $dataRow[] = $row['CompanyAddress'] ?? '';
             } else {
                 $dataRow[] = $row[$column] ?? '';
             }
         }
         $sheet->fromArray($dataRow, null, 'A' . $rowNumber++);
     }
+}
+
+// Clear output buffer to avoid corruption
+if (ob_get_length()) {
+    ob_clean();
 }
 
 // Set headers for download
@@ -107,9 +134,3 @@ $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 exit;
 ?>
-
-
-
-
-
-

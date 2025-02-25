@@ -15,7 +15,7 @@ body {
   --button:lightpink;
   --background:lightskyblue;
   --bg1:rgb(90, 144, 232);
-
+  --bg2:darkblue;
 }
 .Admin_data {
   /* border: 2px solid black; */
@@ -94,13 +94,31 @@ button[type="submit"]{
   height: 2rem;
   margin-left: 3rem;
   border-radius: 5px;
-  border: none;
   font-size: 1rem;
-  background-color: var(--button);
+  font-weight: 550;
+  color: var(--primary);
+  background-color: var(--bg2);
+  border: 3px solid var(--bg2);
   transition: all 0.1s ease-in-out;
 }
 button[type="submit"]:hover{
-  border: 2px solid var(--secondary);
+  background-color: var(--primary);
+  color: (var(--secondary));
+}
+.action_buttons{
+  width: 5rem;
+  height: 2rem;
+  font-size: 12px;
+  font-weight: 550;
+  border-radius: 5px;
+  background-color: var(--bg2);
+  color: #fff;
+  text-transform: uppercase;
+  border: 3px solid var(--bg2);
+}
+.action_buttons:hover{
+  background-color: var(--primary);
+    color: var(--secondary);
 }
 
 .table_box {
